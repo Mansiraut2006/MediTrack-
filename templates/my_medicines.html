@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediTrack - My Medicines</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f8fa;
+            color: #123f68;
+        }
+
+        /* Header */
+        .top-header {
+            width: 100%;
+            height: 95px;
+            background: #0b8291;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 35px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-logo {
+            height: 70px;
+            width: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .header-title h1 {
+            color: white;
+            font-size: 28px;
+        }
+
+        .header-title p {
+            color: white;
+            margin-top: 5px;
+        }
+
+        .dashboard-btn {
+            text-decoration: none;
+            background: white;
+            color: #0b8291;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .dashboard-btn:hover {
+            background: #e8f5f7;
+        }
+
+        /* Main */
+        .container {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h2 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            color: #607d95;
+            font-size: 18px;
+        }
+
+        /* Medicine grid */
+        .medicine-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .medicine-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+            border-left: 6px solid #0b8291;
+        }
+
+        .medicine-card h3 {
+            font-size: 22px;
+            margin-bottom: 15px;
+        }
+
+        .medicine-info {
+            display: flex;
+            justify-content: space-between;
+            margin: 10px 0;
+            color: #607d95;
+        }
+
+        .medicine-info strong {
+            color: #123f68;
+        }
+
+        .risk {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .low-risk {
+            background: #e2f5e8;
+            color: #16803c;
+        }
+
+        .medium-risk {
+            background: #fff3d6;
+            color: #a86b00;
+        }
+
+        .high-risk {
+            background: #ffe4e4;
+            color: #d62828;
+        }
+
+        .no-medicines {
+            background: white;
+            padding: 50px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .no-medicines h3 {
+            margin-bottom: 10px;
+        }
+
+        .no-medicines p {
+            color: #607d95;
+        }
+
+        @media (max-width: 700px) {
+            .medicine-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .top-header {
+                height: auto;
+                gap: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="top-header">
+
+        <div class="header-left">
+
+            <img src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+                 alt="MediTrack Logo"
+                 class="main-logo">
+
+            <div class="header-title">
+                <h1>My Medicines</h1>
+                <p>Track medicine availability and shortage risk</p>
+            </div>
+
+        </div>
+{% if session.get("role") == "admin" %}
+    <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+         Dashboard
+    </a>
+{% else %}
+    <a href="{{ url_for('user_dashboard') }}" class="dashboard-btn">
+         Dashboard
+    </a>
+{% endif %}
+
+
+    </header>
+
+
+    <!-- Main Content -->
+    <main class="container">
+
+        <div class="page-heading">
+            <h2>My Medicines</h2>
+            <p>View all available medicines and their current stock status.</p>
+        </div>
+
+
+        {% if medicines %}
+
+        <div class="medicine-grid">
+
+            {% for medicine in medicines %}
+
+            <div class="medicine-card">
+
+                <h3>{{ medicine.name }}</h3>
+
+                <div class="medicine-info">
+                    <span>Category</span>
+                    <strong>{{ medicine.category }}</strong>
+                </div>
+
+                <div class="medicine-info">
+                    <span>Available Quantity</span>
+                    <strong>{{ medicine.quantity }}</strong>
+                </div>
+
+                <div class="medicine-info">
+                    <span>Risk Level</span>
+
+                    {% if medicine.risk_level == "Low Risk" %}
+
+                        <span class="risk low-risk">
+                            Low Risk
+                        </span>
+
+                    {% elif medicine.risk_level == "Medium Risk" %}
+
+                        <span class="risk medium-risk">
+                            Medium Risk
+                        </span>
+
+                    {% else %}
+
+                        <span class="risk high-risk">
+                            High Risk
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+        {% else %}
+
+        <div class="no-medicines">
+
+            <h3> No Medicines Available</h3>
+
+            <p>
+                There are currently no medicines in the system.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

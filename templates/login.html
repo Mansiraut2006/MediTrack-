@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediTrack - Login</title>
+
+    <!-- Font Awesome Icons -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f8f9;
+            color: #173b4d;
+        }
+
+        /* HEADER */
+        .header {
+            background: #006f7c;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 8px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .brand p {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+
+        /* LOGIN CONTAINER */
+        .container {
+            width: 100%;
+            max-width: 550px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .login-box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .login-box h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 30px;
+            color: #173b4d;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7c85;
+            margin-bottom: 30px;
+        }
+
+        /* FORM FIELD STYLES */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        /* INPUT & SELECT BOX STYLING */
+        input,
+        select {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid #cbd8dd;       /* Soft light blue border */
+            border-radius: 14px;             /* Rounded corners */
+            font-size: 16px;
+            outline: none;
+            background-color: #ffffff;
+            color: #173b4d;                  /* Dark text inside box */
+            transition: all 0.2s ease-in-out;
+            appearance: auto;               /* Keeps single native arrow */
+            -webkit-appearance: auto;
+            -moz-appearance: auto;
+            cursor: pointer;
+        }
+
+        /* PLACEHOLDER TEXT STYLING */
+        input::placeholder {
+            color: #8b9ea7;                  /* Subtle gray-blue placeholder text */
+            font-size: 15px;
+        }
+
+        /* BLUE FOCUS BORDER WHEN CLICKED */
+        input:focus,
+        select:focus {
+            border-color: #007b8a;           /* Highlight border on click */
+            box-shadow: 0 0 0 3px rgba(0, 123, 138, 0.12);
+        }
+
+        /* LABEL STYLING */
+        label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 15px;
+            color: #0f2c3d;                  /* Dark navy blue label text */
+        }
+
+        .required {
+            color: #d93025;                  /* Red asterisk */
+            margin-left: 2px;
+        }
+
+        /* PASSWORD FIELD */
+        .password-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-box input {
+            padding-right: 50px;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #006f7c;
+            font-size: 18px;
+        }
+
+        .forgot-pass-link {
+            display: block;
+            text-align: right;
+            margin-top: 8px;
+            font-size: 14px;
+            color: #006f7c;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .forgot-pass-link:hover {
+            text-decoration: underline;
+        }
+
+        /* CAPTCHA SECTION */
+        .captcha-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            border: 1.5px solid #007b8a;
+            border-radius: 10px;
+            background: #f0f6f8;
+            height: 48px;
+        }
+
+        .refresh-btn {
+            background: #f0f6f8;
+            border: 1.5px solid #007b8a;
+            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            color: #006f7c;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* MESSAGES */
+        .error-message {
+            background: #ffe7e7;
+            color: #c62828;
+            border: 1px solid #f2b5b5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .success-message {
+            background: #e7f7ed;
+            color: #18733a;
+            border: 1px solid #b7e4c7;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* SUBMIT BUTTON */
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #006f7c;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .login-btn:hover {
+            background: #005864;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .register-link a {
+            color: #006f7c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="logo"
+        >
+        <div class="brand">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+    </header>
+
+    <!-- MAIN FORM -->
+    <div class="container">
+        <div class="login-box">
+            <h2>Welcome Back</h2>
+            <p class="subtitle">Log in to access your MediTrack account</p>
+
+            {% if error %}
+                <div class="error-message">{{ error }}</div>
+            {% endif %}
+
+            {% if success %}
+                <div class="success-message">{{ success }}</div>
+            {% endif %}
+
+            <div id="clientError" class="error-message" style="display: none;"></div>
+
+            <form action="{{ url_for('login') }}" method="POST" id="loginForm">
+                
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <!-- ACCOUNT TYPE (SINGLE ARROW FIXED) -->
+                <div class="form-group">
+                    <label for="account_type">Account Type <span class="required">*</span></label>
+                    <select id="account_type" name="account_type" required>
+                        <option value="" disabled selected hidden>Select account type</option>
+                        <option value="user">Patient / General User</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+
+                <!-- PASSWORD -->
+                <div class="form-group">
+                    <label for="password">Password <span class="required">*</span></label>
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            required
+                        >
+                        <i 
+                            class="fas fa-eye-slash toggle-icon" 
+                            onclick="togglePassword('password', this)"
+                        ></i>
+                    </div>
+                    <a href="{{ url_for('forgot_password') }}" class="forgot-pass-link">
+                        Forgot Password?
+                    </a>
+                </div>
+
+                <!-- CAPTCHA -->
+                <div class="form-group">
+                    <label for="captchaInput">CAPTCHA <span class="required">*</span></label>
+                    <div class="captcha-wrapper">
+                        <canvas id="captchaCanvas" width="180" height="48"></canvas>
+                        <button 
+                            type="button" 
+                            class="refresh-btn" 
+                            onclick="genCaptcha()" 
+                            title="Refresh CAPTCHA"
+                        >
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="captchaInput" 
+                        placeholder="Enter captcha code" 
+                        required 
+                        autocomplete="off"
+                    >
+                </div>
+
+                <button type="submit" class="login-btn">Log In</button>
+            </form>
+
+            <div class="register-link">
+                Don't have an account? <a href="{{ url_for('register') }}">Register here</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let captcha = "";
+
+        function genCaptcha() {
+            captcha = "";
+            let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let canvas = document.getElementById("captchaCanvas");
+            if (!canvas) return;
+            let ctx = canvas.getContext("2d");
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#f0f6f8";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = "bold 24px Arial";
+            ctx.fillStyle = "#006f7c";
+
+            for (let i = 0; i < 5; i++) {
+                let ch = chars[Math.floor(Math.random() * chars.length)];
+                captcha += ch;
+                ctx.fillText(ch, 20 + i * 30, 33);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", genCaptcha);
+
+        function togglePassword(fieldId, icon) {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                field.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        }
+
+        function showError(msg) {
+            let errBox = document.getElementById("clientError");
+            errBox.style.display = "block";
+            errBox.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
+            window.scrollTo({ top: errBox.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        document.getElementById("loginForm").addEventListener("submit", function(event) {
+            const userCaptcha = document.getElementById("captchaInput").value.trim();
+
+            if (userCaptcha.toUpperCase() !== captcha.toUpperCase()) {
+                event.preventDefault();
+                showError("Incorrect Security Verification Code. Please try again.");
+                genCaptcha();
+                document.getElementById("captchaInput").value = "";
+                return;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediTrack - Notifications</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f3f8fa;
+            color: #123f68;
+        }
+
+        /* Header */
+        .top-header {
+            width: 100%;
+            height: 95px;
+            background: #0b8291;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 10px 35px;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .main-logo {
+            height: 70px;
+            width: auto;
+            background: white;
+            border-radius: 10px;
+            padding: 5px;
+        }
+
+        .header-title {
+            color: white;
+        }
+
+        .header-title h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .header-title p {
+            font-size: 15px;
+        }
+
+        .dashboard-btn {
+            text-decoration: none;
+            background: white;
+            color: #0b8291;
+            padding: 12px 22px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .dashboard-btn:hover {
+            background: #e8f5f7;
+        }
+
+        /* Main */
+        .container {
+            max-width: 1100px;
+            margin: 45px auto;
+            padding: 0 25px;
+        }
+
+        .page-heading {
+            margin-bottom: 30px;
+        }
+
+        .page-heading h2 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .page-heading p {
+            font-size: 18px;
+            color: #607d95;
+        }
+
+        /* Notification cards */
+        .alert-card {
+            background: white;
+            border-radius: 15px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.07);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-left: 6px solid #0b8291;
+        }
+
+        .alert-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 26px;
+            flex-shrink: 0;
+        }
+
+        .alert-content {
+            flex: 1;
+        }
+
+        .alert-content h3 {
+            font-size: 20px;
+            margin-bottom: 7px;
+        }
+
+        .alert-content p {
+            color: #607d95;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        /* High risk */
+        .high-alert {
+            border-left-color: #e53935;
+        }
+
+        .high-alert .alert-icon {
+            background: #ffe8e8;
+        }
+
+        /* Medium risk */
+        .medium-alert {
+            border-left-color: #f0a500;
+        }
+
+        .medium-alert .alert-icon {
+            background: #fff3d6;
+        }
+
+        /* Low risk */
+        .low-alert {
+            border-left-color: #0b8291;
+        }
+
+        .low-alert .alert-icon {
+            background: #e3f5f7;
+        }
+
+        /* Empty message */
+        .no-alerts {
+            background: white;
+            border-radius: 15px;
+            padding: 45px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .no-alerts .icon {
+            font-size: 45px;
+            margin-bottom: 15px;
+        }
+
+        .no-alerts h3 {
+            margin-bottom: 8px;
+        }
+
+        .no-alerts p {
+            color: #607d95;
+        }
+
+        @media (max-width: 700px) {
+            .top-header {
+                height: auto;
+                gap: 15px;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .header-left {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .alert-card {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <header class="top-header">
+
+        <div class="header-left">
+
+            <img src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+                 alt="MediTrack Logo"
+                 class="main-logo">
+
+            <div class="header-title">
+                <h1>Notifications</h1>
+                <p>Medicine shortage alerts and important updates</p>
+            </div>
+
+        </div>
+
+        {% if session.get("role") == "admin" %}
+    <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+        Dashboard
+    </a>
+{% else %}
+    <a href="{{ url_for('user_dashboard') }}" class="dashboard-btn">
+         Dashboard
+    </a>
+{% endif %}
+
+    </header>
+         
+    <!-- Main Content -->
+    <main class="container">
+
+        <div class="page-heading">
+            <h2> Notifications</h2>
+            <p>Stay informed about medicine availability and shortage risks.</p>
+        </div>
+        <!-- AI Prediction Alert -->
+        <div class="alert-card low-alert">
+
+     
+
+            <div class="alert-content">
+                <h3>AI Prediction Available</h3>
+                <p>
+                    MediTrack AI can analyze medicine stock levels and
+                    identify medicines that may require attention.
+                </p>
+            </div>
+
+        </div>
+
+
+        <!-- Information -->
+        <div class="alert-card low-alert">
+
+            <div class="alert-content">
+                <h3>Stock Monitoring Active</h3>
+                <p>
+                    MediTrack is continuously monitoring the available
+                    medicine stock information.
+                </p>
+            </div>
+
+        </div>
+
+
+       <!-- Dynamic High Risk Alerts -->
+
+{% set high_risk = medicines | selectattr("risk_level", "equalto", "High Risk") | list %}
+
+{% if high_risk %}
+
+    {% for medicine in high_risk %}
+
+    <div class="alert-card high-alert">
+
+        
+
+        <div class="alert-content">
+
+            <h3>High Shortage Risk</h3>
+
+            <p>
+                <strong>{{ medicine.name }}</strong>
+                has critically low stock.
+            </p>
+
+            <p>
+                Available Quantity:
+                <strong>{{ medicine.quantity }}</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% endif %}
+
+
+<!-- Dynamic Medium Risk Alerts -->
+
+{% set medium_risk = medicines | selectattr("risk_level", "equalto", "Medium Risk") | list %}
+
+{% if medium_risk %}
+
+    {% for medicine in medium_risk %}
+
+    <div class="alert-card medium-alert">
+
+      
+
+        <div class="alert-content">
+
+            <h3>Medium Shortage Risk</h3>
+
+            <p>
+                <strong>{{ medicine.name }}</strong>
+                may require attention because its stock level is moderate.
+            </p>
+
+            <p>
+                Available Quantity:
+                <strong>{{ medicine.quantity }}</strong>
+            </p>
+
+        </div>
+
+    </div>
+
+    {% endfor %}
+
+{% endif %}
+
+
+    </main>
+
+</body>
+</html>

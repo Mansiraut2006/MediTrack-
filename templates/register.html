@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediTrack - Register</title>
+
+    <!-- Font Awesome for Eye & Refresh Icons -->
+    <link 
+        rel="stylesheet" 
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            background: #f4f8f9;
+            color: #173b4d;
+        }
+
+        /* HEADER */
+        .header {
+            background: #006f7c;
+            color: white;
+            padding: 15px 40px;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo {
+            width: 55px;
+            height: 55px;
+            background: white;
+            border-radius: 8px;
+            object-fit: contain;
+            margin-right: 15px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            font-size: 28px;
+        }
+
+        .brand p {
+            margin: 5px 0 0;
+            font-size: 16px;
+        }
+
+        /* REGISTER BOX */
+        .container {
+            width: 100%;
+            max-width: 550px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .register-box {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.10);
+        }
+
+        .register-box h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 8px;
+            font-size: 30px;
+            color: #173b4d;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7c85;
+            margin-bottom: 30px;
+        }
+
+        /* FORM */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        .required {
+            color: red;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 14px 16px;
+            border: 1px solid #cbd8dd;
+            border-radius: 10px;
+            font-size: 16px;
+            outline: none;
+            background: white;
+        }
+
+        input:focus,
+        select:focus {
+            border-color: #007b8a;
+            box-shadow: 0 0 0 2px rgba(0, 123, 138, 0.10);
+        }
+
+        /* PASSWORD BOX & ICON */
+        .password-box {
+            position: relative;
+            width: 100%;
+        }
+
+        .password-box input {
+            padding-right: 50px;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #006f7c;
+            font-size: 18px;
+        }
+
+        .toggle-icon:hover {
+            color: #004e59;
+        }
+
+        .password-help {
+            display: block;
+            margin-top: 7px;
+            color: #555;
+            font-size: 13px;
+            line-height: 1.4;
+        }
+
+        /* CAPTCHA SECTION */
+        .captcha-wrapper {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        canvas {
+            border: 1px solid #cbd8dd;
+            border-radius: 10px;
+            background: #f0f6f8;
+            height: 48px;
+        }
+
+        .refresh-btn {
+            background: #f0f6f8;
+            border: 1px solid #cbd8dd;
+            border-radius: 10px;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            color: #006f7c;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .refresh-btn:hover {
+            background: #e1edf0;
+        }
+
+        /* ERROR */
+        .error-message {
+            background: #ffe7e7;
+            color: #c62828;
+            border: 1px solid #f2b5b5;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        /* BUTTON */
+        .register-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            background: #006f7c;
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .register-btn:hover {
+            background: #005864;
+        }
+
+        /* LOGIN LINK */
+        .login-link {
+            text-align: center;
+            margin-top: 20px;
+            color: #555;
+        }
+
+        .login-link a {
+            color: #006f7c;
+            font-weight: bold;
+            text-decoration: none;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .container {
+                margin: 25px auto;
+            }
+
+            .register-box {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="logo"
+        >
+        <div class="brand">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+    </header>
+
+    <!-- REGISTER -->
+    <div class="container">
+        <div class="register-box">
+            <h2>Create Account</h2>
+            <p class="subtitle">Register to access MediTrack</p>
+
+            <!-- SERVER ERROR MESSAGE -->
+            {% if error %}
+                <div class="error-message">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+            <!-- CLIENT ERROR MESSAGE -->
+            <div id="clientError" class="error-message" style="display: none;"></div>
+
+            <form
+                action="{{ url_for('register') }}"
+                method="POST"
+                id="registerForm"
+            >
+                <!-- NAME -->
+                <div class="form-group">
+                    <label for="name">
+                        Full Name <span class="required">*</span>
+                    </label>
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        placeholder="Enter your full name"
+                        required
+                    >
+                </div>
+
+                <!-- EMAIL -->
+                <div class="form-group">
+                    <label for="email">
+                        Email <span class="required">*</span>
+                    </label>
+                    <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="Enter your email"
+                        required
+                    >
+                </div>
+
+                <!-- ACCOUNT TYPE -->
+                <div class="form-group">
+                    <label for="account_type">
+                        Account Type <span class="required">*</span>
+                    </label>
+                    <select
+                        id="account_type"
+                        name="account_type"
+                        required
+                    >
+                        <option value="">Select account type</option>
+                        <option value="user">Patient / General User</option>
+                        <option value="admin">Administrator</option>
+                    </select>
+                </div>
+
+                <!-- CREATE PASSWORD -->
+                <div class="form-group">
+                    <label for="password">
+                        Create Password <span class="required">*</span>
+                    </label>
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Create a strong password"
+                            minlength="8"
+                            required
+                        >
+                        <i 
+                            class="fas fa-eye-slash toggle-icon" 
+                            onclick="togglePassword('password', this)"
+                        ></i>
+                    </div>
+                    <span class="password-help">
+                        * Minimum 8 characters, uppercase, lowercase, number and special character.
+                    </span>
+                </div>
+
+                <!-- CONFIRM PASSWORD -->
+                <div class="form-group">
+                    <label for="confirm_password">
+                        Confirm Password <span class="required">*</span>
+                    </label>
+                    <div class="password-box">
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Confirm your password"
+                            required
+                        >
+                        <i 
+                            class="fas fa-eye-slash toggle-icon" 
+                            onclick="togglePassword('confirm_password', this)"
+                        ></i>
+                    </div>
+                </div>
+
+                <!-- CAPTCHA -->
+                <div class="form-group">
+                    <label for="captchaInput">
+                        Security Verification <span class="required">*</span>
+                    </label>
+                    <div class="captcha-wrapper">
+                        <canvas id="captchaCanvas" width="180" height="48"></canvas>
+                        <button 
+                            type="button" 
+                            class="refresh-btn" 
+                            onclick="genCaptcha()" 
+                            title="Refresh CAPTCHA"
+                        >
+                            <i class="fas fa-sync-alt"></i>
+                        </button>
+                    </div>
+                    <input 
+                        type="text" 
+                        id="captchaInput" 
+                        placeholder="Enter verification code" 
+                        required 
+                        autocomplete="off"
+                    >
+                </div>
+
+                <!-- REGISTER BUTTON -->
+                <button
+                    type="submit"
+                    class="register-btn"
+                >
+                    Register
+                </button>
+            </form>
+
+            <!-- LOGIN LINK -->
+            <div class="login-link">
+                Already have an account?
+                <a href="{{ url_for('login') }}">Login here</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT -->
+    <script>
+        let captcha = "";
+
+        // CAPTCHA Generator
+        function genCaptcha() {
+            captcha = "";
+            let chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+            let canvas = document.getElementById("captchaCanvas");
+            
+            if (!canvas) return;
+            let ctx = canvas.getContext("2d");
+
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#f0f6f8";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.font = "bold 24px Arial";
+            ctx.fillStyle = "#006f7c";
+
+            for (let i = 0; i < 5; i++) {
+                let ch = chars[Math.floor(Math.random() * chars.length)];
+                captcha += ch;
+                ctx.fillText(ch, 20 + i * 30, 33);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", genCaptcha);
+
+        // Toggle Password Visibility
+        function togglePassword(fieldId, icon) {
+            const field = document.getElementById(fieldId);
+            if (!field) return;
+
+            if (field.type === "password") {
+                field.type = "text";
+                icon.classList.remove("fa-eye-slash");
+                icon.classList.add("fa-eye");
+            } else {
+                field.type = "password";
+                icon.classList.remove("fa-eye");
+                icon.classList.add("fa-eye-slash");
+            }
+        }
+
+        // Display Inline Error Box
+        function showError(msg) {
+            let errBox = document.getElementById("clientError");
+            errBox.style.display = "block";
+            errBox.innerHTML = '<i class="fas fa-exclamation-circle"></i> ' + msg;
+            window.scrollTo({ top: errBox.offsetTop - 20, behavior: 'smooth' });
+        }
+
+        // Form Submit Validation
+        document.getElementById("registerForm").addEventListener("submit", function(event) {
+            const password = document.getElementById("password").value;
+            const confirmPassword = document.getElementById("confirm_password").value;
+            const userCaptcha = document.getElementById("captchaInput").value.trim();
+
+            // Password strength regex check
+            const strongPassword = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&]).{8,}$/;
+
+            if (!strongPassword.test(password)) {
+                event.preventDefault();
+                showError("Password must contain at least 8 characters, one uppercase letter, one lowercase letter, one number and one special character.");
+                return;
+            }
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                showError("Passwords do not match.");
+                return;
+            }
+
+            if (userCaptcha.toUpperCase() !== captcha.toUpperCase()) {
+                event.preventDefault();
+                showError("Incorrect Security Verification Code. Please try again.");
+                genCaptcha();
+                document.getElementById("captchaInput").value = "";
+                return;
+            }
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Medicine Details - MediTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f9;
+            color: #123746;
+            min-height: 100vh;
+        }
+
+        /* ================= HEADER ================= */
+
+.risk-header {
+    width: 100%;
+    height: 90px;
+    background: #0b8795;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 8px 35px;
+    box-sizing: border-box;
+}
+
+.risk-brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.risk-logo {
+    width: 82px;
+    height: 74px;
+
+    object-fit: contain;
+
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+
+    box-sizing: border-box;
+}
+
+.risk-brand-text {
+    margin-left: 20px;
+}
+
+.risk-brand-text h1 {
+    margin: 0;
+    color: white;
+
+    font-size: 36px;
+    font-weight: bold;
+    line-height: 1;
+}
+
+.risk-brand-text p {
+    margin: 6px 0 0;
+    color: white;
+
+    font-size: 17px;
+}
+
+.risk-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.risk-dashboard-btn {
+    width: 150px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #08788a;
+
+    border-radius: 9px;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.risk-dashboard-btn:hover {
+    background: #e8f6f8;
+}
+
+        .logo {
+            height: 55px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #0b7f8f;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 60px auto;
+            padding: 0 20px;
+        }
+
+        .title {
+            font-size: 32px;
+            margin-bottom: 25px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        }
+
+        .medicine-name {
+            font-size: 30px;
+            font-weight: bold;
+            margin-bottom: 25px;
+        }
+
+        .details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .detail-box {
+            background: #f4f8f9;
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .label {
+            color: #6b7d84;
+            font-size: 14px;
+            margin-bottom: 8px;
+        }
+
+        .value {
+            font-size: 19px;
+            font-weight: bold;
+        }
+
+        .risk {
+            display: inline-block;
+            padding: 8px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .high {
+            background: #ffe1e1;
+            color: #c62828;
+        }
+
+        .medium {
+            background: #fff0cc;
+            color: #a66a00;
+        }
+
+        .low {
+            background: #dff5e7;
+            color: #18733b;
+        }
+
+        @media (max-width: 650px) {
+            .header {
+                padding: 15px 20px;
+            }
+
+            .details {
+                grid-template-columns: 1fr;
+            }
+
+            .container {
+                margin-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="risk-header">
+
+    <div class="risk-brand">
+
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="risk-logo"
+        >
+
+        <div class="risk-brand-text">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+
+    </div>
+
+    <div class="risk-header-right">
+        
+            {% if session.get("role") == "admin" %}
+            <a href="{{ url_for('admin_dashboard') }}" class="risk-dashboard-btn">
+                Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('user_dashboard') }}" class="risk-dashboard-btn">
+                Dashboard
+            </a>
+        {% endif %}
+
+    </div>
+    </header>
+
+
+    <div class="container">
+
+        <h1 class="title">Medicine Details</h1>
+
+        <div class="card">
+
+            <div class="medicine-name">
+                {{ medicine.name }}
+            </div>
+
+            <div class="details">
+
+                <div class="detail-box">
+                    <div class="label">Medicine ID</div>
+                    <div class="value">
+                        {{ medicine.id }}
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="label">Category</div>
+                    <div class="value">
+                        {{ medicine.category }}
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="label">Available Quantity</div>
+                    <div class="value">
+                        {{ medicine.quantity }}
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="label">Risk Level</div>
+
+                    <div class="value">
+
+                        {% if medicine.risk_level == "High Risk" %}
+                            <span class="risk high">
+                                High Risk
+                            </span>
+
+                        {% elif medicine.risk_level == "Medium Risk" %}
+                            <span class="risk medium">
+                                Medium Risk
+                            </span>
+
+                        {% else %}
+                            <span class="risk low">
+                                Low Risk
+                            </span>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="label">Last Updated</div>
+                    <div class="value">
+                        {{ medicine.last_updated }}
+                    </div>
+                </div>
+
+                <div class="detail-box">
+                    <div class="label">Location</div>
+                    <div class="value">
+                        Local Pharmacy
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Medicine - MediTrack</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f9;
+            min-height: 100vh;
+            color: #123746;
+        }
+
+        /* Header */
+        .top-header {
+    width: 100%;
+    height: 95px;
+    background: #0b8291;
+    display: flex;
+    align-items: center;
+    padding: 10px 35px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    width: 82px;
+    height: 74px;
+    object-fit: contain;
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.brand-text {
+    margin-left: 20px;
+}
+
+.brand-text h1 {
+    margin: 0;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.brand-text p {
+    margin: 5px 0 0;
+    color: white;
+    font-size: 16px;
+}
+
+.page-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    text-align: center;
+}
+
+.page-title h2 {
+    margin: 0;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.header-actions {
+    margin-left: auto;
+}
+
+.dashboard-btn {
+    width: 140px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: #0b8291;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboard-btn:hover {
+    background: #e8f5f7;
+}
+
+        .logo {
+            height: 55px;
+            width: auto;
+        }
+
+        .back-btn {
+            text-decoration: none;
+            background: #0b7f8f;
+            color: white;
+            padding: 11px 20px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .back-btn:hover {
+            background: #096b78;
+        }
+
+        /* Main */
+        .container {
+            max-width: 700px;
+            margin: 55px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+
+        .page-subtitle {
+            text-align: center;
+            color: #6b7d84;
+            margin-bottom: 30px;
+        }
+
+        /* Card */
+        .card {
+            background: white;
+            padding: 35px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .medicine-id {
+            background: #eef7f8;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 25px;
+            color: #0b7f8f;
+            font-weight: bold;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .required {
+            color: #d32f2f;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 15px;
+            border: 1px solid #ccd8dc;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #0b7f8f;
+            box-shadow: 0 0 0 3px rgba(11, 127, 143, 0.1);
+        }
+
+        .risk-preview {
+            margin-top: 8px;
+            font-size: 14px;
+            color: #6b7d84;
+        }
+
+        /* Error */
+        .error {
+            background: #ffe7e7;
+            color: #b71c1c;
+            padding: 13px 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Buttons */
+        .buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 30px;
+        }
+
+        .update-btn,
+        .cancel-btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 9px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .update-btn {
+            background: #0b7f8f;
+            color: white;
+        }
+
+        .update-btn:hover {
+            background: #096b78;
+        }
+
+        .cancel-btn {
+            background: #e8eef0;
+            color: #123746;
+        }
+
+        .cancel-btn:hover {
+            background: #d9e2e5;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 0 20px;
+            }
+
+            .logo {
+                height: 45px;
+            }
+
+            .container {
+                margin-top: 35px;
+            }
+
+            .card {
+                padding: 25px;
+            }
+
+            .buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+ <header class="top-header">
+
+    <div class="header-brand">
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="header-logo"
+        >
+
+        <div class="brand-text">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h2>Edit Medicine</h2>
+    </div>
+
+    <div class="header-actions">
+        <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+</header>
+
+
+    <!-- Main -->
+    <div class="container">
+
+
+        <p class="page-subtitle">
+            Update medicine information and stock quantity
+        </p>
+
+
+        <div class="card">
+
+            <div class="medicine-id">
+                Medicine ID: #{{ medicine.id }}
+            </div>
+
+
+            {% if error %}
+                <div class="error">
+                    {{ error }}
+                </div>
+            {% endif %}
+
+
+            <form method="POST">
+
+                <!-- Medicine Name -->
+                <div class="form-group">
+
+                    <label for="name">
+                        Medicine Name <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="name"
+                        name="name"
+                        value="{{ medicine.name }}"
+                        placeholder="Enter medicine name"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Category -->
+                <div class="form-group">
+
+                    <label for="category">
+                        Category <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="text"
+                        id="category"
+                        name="category"
+                        value="{{ medicine.category }}"
+                        placeholder="Enter category"
+                        required
+                    >
+
+                </div>
+
+
+                <!-- Quantity -->
+                <div class="form-group">
+
+                    <label for="quantity">
+                        Quantity <span class="required">*</span>
+                    </label>
+
+                    <input
+                        type="number"
+                        id="quantity"
+                        name="quantity"
+                        value="{{ medicine.quantity }}"
+                        min="0"
+                        placeholder="Enter quantity"
+                        required
+                        oninput="showRisk(this.value)"
+                    >
+
+                    <div class="risk-preview" id="riskPreview">
+                        Current Risk: {{ medicine.risk_level }}
+                    </div>
+
+                </div>
+
+
+                <!-- Buttons -->
+                <div class="buttons">
+
+                    <a
+                        href="{{ url_for('admin_dashboard') }}"
+                        class="cancel-btn"
+                    >
+                        Cancel
+                    </a>
+
+                    <button
+                        type="submit"
+                        class="update-btn"
+                    >
+                        Update Medicine
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        function showRisk(quantity) {
+
+            quantity = parseInt(quantity);
+
+            const riskPreview = document.getElementById("riskPreview");
+
+            if (isNaN(quantity)) {
+                riskPreview.innerText = "Risk: Enter quantity";
+                return;
+            }
+
+            if (quantity <= 100) {
+
+                riskPreview.innerText =
+                    "Risk: High Risk";
+
+            } else if (quantity < 500) {
+
+                riskPreview.innerText =
+                    "Risk: Medium Risk";
+
+            } else {
+
+                riskPreview.innerText =
+                    "Risk: Low Risk";
+            }
+        }
+
+    </script>
+
+</body>
+</html>

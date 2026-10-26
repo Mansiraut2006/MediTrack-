@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shortage Risk - MediTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f8fa;
+            color: #123f63;
+        }
+        /* Center title */
+.page-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    text-align: center;
+}
+
+.page-title h2 {
+    margin: 0;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+
+        
+/* ================= SHORTAGE RISK HEADER ================= */
+
+.risk-header {
+    width: 100%;
+    height: 90px;
+    background: #0b8795;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 8px 35px;
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+.risk-brand {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.risk-logo {
+    width: 82px;
+    height: 74px;
+
+    object-fit: contain;
+
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+
+    box-sizing: border-box;
+}
+
+.risk-brand-text {
+    margin-left: 20px;
+}
+
+.risk-brand-text h1 {
+    margin: 0;
+
+    color: white;
+
+    font-size: 36px;
+    font-weight: bold;
+
+    line-height: 1;
+}
+
+.risk-brand-text p {
+    margin: 6px 0 0;
+
+    color: white;
+
+    font-size: 17px;
+}
+
+.risk-header-right {
+    display: flex;
+    align-items: center;
+}
+
+.risk-dashboard-btn {
+    width: 150px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #08788a;
+
+    border-radius: 9px;
+
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.risk-dashboard-btn:hover {
+    background: #e8f6f8;
+}
+
+        .back-btn {
+            text-decoration: none;
+            background: #087f8c;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 8px;
+        }
+
+
+        .title {
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        .description {
+            color: #607d8b;
+            margin-bottom: 30px;
+            font-size: 16px;
+        }
+
+        .warning-box {
+            background: #fff4e5;
+            border-left: 5px solid #f39c12;
+            padding: 18px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+
+        .warning-box h3 {
+            color: #b86b00;
+            margin-bottom: 5px;
+        }
+
+        .medicine-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .medicine-card {
+            background: white;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #e74c3c;
+        }
+
+        .risk-icon {
+            font-size: 30px;
+            margin-bottom: 15px;
+        }
+
+        .medicine-name {
+            font-size: 23px;
+            font-weight: bold;
+            margin-bottom: 8px;
+        }
+
+        .category {
+            color: #607d8b;
+            margin-bottom: 20px;
+        }
+
+        .stock {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-top: 1px solid #eeeeee;
+        }
+
+        .stock-number {
+            color: #e74c3c;
+            font-weight: bold;
+        }
+
+        .risk-badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 8px 14px;
+            background: #fdecea;
+            color: #c0392b;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        .container {
+    width: 92%;
+    max-width: 1250px;
+    margin: 35px auto;
+}
+
+        .empty {
+            background: white;
+            padding: 50px;
+            text-align: center;
+            border-radius: 15px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.06);
+        }
+
+        .empty-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        @media (max-width: 600px) {
+            .header {
+                padding: 18px 20px;
+            }
+
+            .container {
+                width: 92%;
+            }
+
+            .title {
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="risk-header">
+
+    <div class="risk-brand">
+
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="risk-logo"
+        >
+
+        <div class="risk-brand-text">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+        <div class="page-title">
+        <h2> Shortage Risk</h2>
+    </div>
+
+    </div>
+
+    <div class="risk-header-right">
+
+        {% if session.get("role") == "admin" %}
+            <a href="{{ url_for('admin_dashboard') }}" class="risk-dashboard-btn">
+                Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('user_dashboard') }}" class="risk-dashboard-btn">
+                Dashboard
+            </a>
+        {% endif %}
+
+    </div>
+
+</header>
+
+    <main class="container">
+        
+
+        <h1 class="title">
+             Shortage Risk
+        </h1>
+
+        <p class="description">
+            Medicines currently identified as having a high shortage risk.
+        </p>
+
+
+        {% if medicines %}
+
+        <div class="warning-box">
+            <h3> Attention Required</h3>
+
+            <p>
+                {{ medicines|length }}
+                medicine(s) currently have a high shortage risk.
+                Please monitor their availability.
+            </p>
+        </div>
+
+
+        <div class="medicine-grid">
+
+            {% for medicine in medicines %}
+
+            <div class="medicine-card">
+
+                <div class="risk-icon">
+                    
+                </div>
+
+                <div class="medicine-name">
+                    {{ medicine.name }}
+                </div>
+
+                <div class="category">
+                    {{ medicine.category }}
+                </div>
+
+                <div class="stock">
+
+                    <span>
+                        Current Stock
+                    </span>
+
+                    <span class="stock-number">
+                        {{ medicine.quantity }}
+                    </span>
+
+                </div>
+
+                <div class="risk-badge">
+                    {{ medicine.risk_level }}
+                </div>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+
+        {% else %}
+
+        <div class="empty">
+
+            <div class="empty-icon">
+                ✅
+            </div>
+
+            <h2>
+                No Shortage Risk
+            </h2>
+
+            <p>
+                No medicines are currently marked as High Risk.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </main>
+
+</body>
+</html>

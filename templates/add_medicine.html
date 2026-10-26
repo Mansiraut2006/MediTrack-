@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Medicine - MediTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f8fa;
+            color: #183b56;
+        }
+
+        .top-header {
+    width: 100%;
+    height: 95px;
+    background: #0b8291;
+    display: flex;
+    align-items: center;
+    padding: 10px 35px;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Left side */
+.header-brand {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    width: 82px;
+    height: 74px;
+    object-fit: contain;
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.brand-text {
+    margin-left: 20px;
+}
+
+.brand-text h1 {
+    margin: 0;
+    color: white;
+    font-size: 30px;
+    font-weight: 700;
+}
+
+.brand-text p {
+    margin: 5px 0 0;
+    color: white;
+    font-size: 16px;
+}
+
+/* Center title */
+.page-title {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: max-content;
+    text-align: center;
+}
+
+.page-title h2 {
+    margin: 0;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+/* Right side */
+.header-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+}
+
+.dashboard-btn {
+    width: 140px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    color: #0b8291;
+    text-decoration: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.dashboard-btn:hover {
+    background: #e8f5f7;
+}
+
+.header-logo {
+    width: 82px;
+    height: 74px;
+    object-fit: contain;
+
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+
+
+.header-logout {
+    width: 120px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #08788a;
+
+    border-radius: 9px;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.profile-btn:hover,
+.header-logout:hover {
+    background: #e8f6f8;
+}
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        .main-logo {
+            height: 70px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        
+
+        
+        .container {
+            max-width: 700px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .form-card {
+            background: white;
+            padding: 35px;
+            border-radius: 16px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .form-card h1 {
+            color: #123f68;
+            margin-bottom: 8px;
+            font-size: 27px;
+        }
+
+        .form-card p {
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 22px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #183b56;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #d5dde5;
+            border-radius: 9px;
+            font-size: 16px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #0b8291;
+        }
+
+        .add-btn {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: #0b8291;
+            color: white;
+            font-size: 17px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .add-btn:hover {
+            background: #086c78;
+        }
+
+        .error {
+            background: #fee2e2;
+            color: #b91c1c;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .success {
+            background: #dcfce7;
+            color: #166534;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<header class="top-header">
+
+    <div class="header-brand">
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="header-logo"
+        >
+
+        <div class="brand-text">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+    </div>
+
+    <div class="page-title">
+        <h2>Add Medicine</h2>
+    </div>
+
+    <div class="header-actions">
+        <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+            Dashboard
+        </a>
+    </div>
+
+</header>
+
+<div class="container">
+
+    <div class="form-card">
+
+        <h1>Add New Medicine</h2>
+
+        <p>
+            Enter medicine details. Risk level will be calculated automatically.
+        </p>
+
+        {% if error %}
+            <div class="error">
+                {{ error }}
+            </div>
+        {% endif %}
+
+        {% if success %}
+            <div class="success">
+                {{ success }}
+            </div>
+        {% endif %}
+
+        <form method="POST">
+
+            <div class="form-group">
+                <label for="name">Medicine Name</label>
+
+                <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    placeholder="Enter medicine name"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="category">Category</label>
+
+                <input
+                    type="text"
+                    id="category"
+                    name="category"
+                    placeholder="Enter category"
+                    required
+                >
+            </div>
+
+
+            <div class="form-group">
+                <label for="quantity">Quantity</label>
+
+                <input
+                    type="number"
+                    id="quantity"
+                    name="quantity"
+                    placeholder="Enter quantity"
+                    min="0"
+                    required
+                >
+            </div>
+
+
+            <button type="submit" class="add-btn">
+                + Add Medicine
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+</body>
+</html>

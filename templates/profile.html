@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Profile - MediTrack</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f3f8fa;
+            color: #123746;
+        }
+
+        /* Header */
+        .header {
+            background: #0b8795;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            padding: 20px 35px;
+            color: white;
+        }
+
+        .logo {
+            width: 135px;
+            height: 85px;
+            object-fit: contain;
+            background: white;
+            border-radius: 10px;
+            padding: 6px;
+        }
+
+        .header-content {
+            margin-left: 25px;
+        }
+
+        .header-content h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        .header-content p {
+            margin: 8px 0 0;
+            font-size: 18px;
+        }
+
+        .dashboard-btn {
+            margin-left: auto;
+            background: white;
+            color: #0b7f8f;
+            padding: 13px 22px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .dashboard-btn:hover {
+            background: #e9f6f8;
+        }
+
+        /* Main */
+        .container {
+            max-width: 900px;
+            margin: 45px auto;
+            padding: 0 20px;
+        }
+
+        .page-title {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .page-title h2 {
+            margin: 0;
+            font-size: 34px;
+            color: #064b73;
+        }
+
+        .page-title p {
+            color: #647b85;
+            font-size: 17px;
+            margin-top: 8px;
+        }
+
+        /* Profile Card */
+        .profile-card {
+            background: white;
+            border-radius: 16px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .profile-top {
+            text-align: center;
+            padding-bottom: 25px;
+            border-bottom: 1px solid #e3ecef;
+        }
+
+        .profile-icon {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 15px;
+            border-radius: 50%;
+            background: #e8f6f8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 42px;
+        }
+
+        .profile-top h3 {
+            margin: 0;
+            font-size: 25px;
+            color: #123746;
+        }
+
+        .profile-top span {
+            display: inline-block;
+            margin-top: 8px;
+            padding: 6px 14px;
+            border-radius: 20px;
+            background: #e8f6f8;
+            color: #0b7f8f;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        /* Information */
+        .profile-info {
+            margin-top: 25px;
+        }
+
+        .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 5px;
+            border-bottom: 1px solid #edf1f2;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #647b85;
+            font-size: 15px;
+            font-weight: bold;
+        }
+
+        .info-value {
+            color: #123746;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        /* Buttons */
+        .profile-actions {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+        }
+
+        .action-btn {
+            padding: 12px 22px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .logout-btn {
+            background: #ffe5e5;
+            color: #c62828;
+            border: 1px solid #f2b8b8;
+        }
+
+        .logout-btn:hover {
+            background: #c62828;
+            color: white;
+        }
+
+        @media (max-width: 700px) {
+            .header {
+                padding: 15px;
+            }
+
+            .logo {
+                width: 100px;
+                height: 70px;
+            }
+
+            .header-content h1 {
+                font-size: 24px;
+            }
+
+            .header-content p {
+                font-size: 14px;
+            }
+
+            .dashboard-btn {
+                padding: 10px;
+                font-size: 14px;
+            }
+
+            .profile-card {
+                padding: 22px;
+            }
+
+            .info-row {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 6px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <div class="header">
+
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            class="logo"
+            alt="MediTrack Logo"
+        >
+
+        <div class="header-content">
+            <h1>My Profile</h1>
+            <p>Manage your MediTrack account</p>
+        </div>
+{% if session.get("role") == "admin" %}
+    <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+         Dashboard
+    </a>
+{% else %}
+    <a href="{{ url_for('user_dashboard') }}" class="dashboard-btn">
+         Dashboard
+    </a>
+{% endif %}
+
+    </div>
+
+
+    <!-- Main Content -->
+    <div class="container">
+
+        <div class="page-title">
+            <h2> My Profile</h2>
+            <p>View your account information</p>
+        </div>
+
+        <div class="profile-card">
+
+            <div class="profile-top">
+
+                
+
+                <h3>{{ user.name }}</h3>
+
+                <span>
+                    Patient / General User
+                </span>
+
+            </div>
+
+
+            <div class="profile-info">
+
+                <div class="info-row">
+                    <div class="info-label">
+                        Full Name
+                    </div>
+
+                    <div class="info-value">
+                        {{ user.name }}
+                    </div>
+                </div>
+
+
+                <div class="info-row">
+                    <div class="info-label">
+                        Email Address
+                    </div>
+
+                    <div class="info-value">
+                        {{ user.email }}
+                    </div>
+                </div>
+
+
+                <div class="info-row">
+                    <div class="info-label">
+                        Account Type
+                    </div>
+
+                    <div class="info-value">
+                        Patient / General User
+                    </div>
+                </div>
+
+
+                <div class="info-row">
+                    <div class="info-label">
+                        Account ID
+                    </div>
+
+                    <div class="info-value">
+                        #{{ user.id }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <div class="profile-actions">
+
+                <a href="{{ url_for('logout') }}"
+                   class="action-btn logout-btn">
+                    Logout
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</body>
+</html>

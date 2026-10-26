@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MediTrack - Medicine Search</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #f4f8f9;
+            color: #263f45;
+        }
+        .top-header {
+    width: 100%;
+    height: 90px;
+    background: #0b8795;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 8px 30px;
+    box-sizing: border-box;
+
+    position: relative;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+}
+
+.header-logo {
+    width: 82px;
+    height: 74px;
+    object-fit: contain;
+
+    background: white;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.brand-text {
+    margin-left: 20px;
+}
+
+.brand-text h1 {
+    margin: 0;
+    color: white;
+    font-size: 36px;
+    line-height: 1;
+}
+
+.brand-text p {
+    margin: 6px 0 0;
+    color: white;
+    font-size: 17px;
+}
+
+.page-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-title h2 {
+    margin: 0;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.dashboard-btn {
+    width: 150px;
+    height: 50px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #08788a;
+
+    border-radius: 9px;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: bold;
+}
+
+.dashboard-btn:hover {
+    background: #e8f6f8;
+}
+
+
+        /* =========================
+           Navbar
+        ========================= */
+
+        .navbar {
+            height: 70px;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 45px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+
+        .logo-name {
+            font-size: 24px;
+            font-weight: bold;
+            color: #08788a;
+        }
+
+        .logo-name span {
+            color: #19a85b;
+        }
+
+        .nav-links {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.nav-links a {
+    height: 50px;
+    min-width: 130px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: white;
+    color: #08788a;
+
+    border-radius: 9px;
+    text-decoration: none;
+
+    font-size: 17px;
+    font-weight: bold;
+    box-sizing: border-box;
+}
+
+.nav-links a:hover {
+    background: #e8f6f8;
+}
+
+        .nav-links .logout {
+            background: #08788a;
+            color: white;
+            padding: 9px 17px;
+            border-radius: 7px;
+        }
+
+        .nav-links .logout:hover {
+            background: #066574;
+            color: white;
+        }
+
+
+        /* =========================
+           Main Container
+        ========================= */
+
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            padding: 40px 25px;
+        }
+
+
+        /* =========================
+           Page Title
+        ========================= */
+
+        .page-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.page-title h2 {
+    margin: 0;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+        .page-title h1 {
+            font-size: 30px;
+            color: #183e46;
+            margin-bottom: 8px;
+        }
+
+        .page-title p {
+            color: #718086;
+        }
+
+
+        /* =========================
+           Search Card
+        ========================= */
+
+        .search-card {
+            background: white;
+            padding: 25px;
+            border-radius: 14px;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+            margin-bottom: 30px;
+        }
+
+        .search-card h3 {
+            margin-bottom: 15px;
+            color: #183e46;
+        }
+
+        .search-form {
+            display: flex;
+            gap: 10px;
+        }
+
+        .search-form input {
+            flex: 1;
+            height: 50px;
+            padding: 0 15px;
+            border: 1px solid #ccd9dd;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .search-form input:focus {
+            border-color: #08788a;
+        }
+
+        .search-form button {
+            width: 120px;
+            border: none;
+            border-radius: 8px;
+            background: #08788a;
+            color: white;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .search-form button:hover {
+            background: #066574;
+        }
+
+
+        /* =========================
+           Search Message
+        ========================= */
+
+        .search-message {
+            margin-top: 15px;
+            color: #718086;
+            font-size: 14px;
+        }
+
+        .search-message strong {
+            color: #08788a;
+        }
+
+
+        /* =========================
+           Results
+        ========================= */
+
+        .results-title {
+            font-size: 22px;
+            margin-bottom: 15px;
+            color: #183e46;
+        }
+
+
+        /* =========================
+           Medicine Table
+        ========================= */
+
+        .medicine-table {
+            width: 100%;
+            background: white;
+            border-collapse: collapse;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 3px 15px rgba(0,0,0,0.06);
+        }
+
+        .medicine-table th {
+            background: #08788a;
+            color: white;
+            padding: 15px;
+            text-align: left;
+            font-size: 14px;
+        }
+
+        .medicine-table td {
+            padding: 15px;
+            border-bottom: 1px solid #edf1f2;
+            font-size: 14px;
+        }
+
+        .medicine-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .medicine-table tr:hover {
+            background: #f8fbfc;
+        }
+
+
+        /* =========================
+           Status
+        ========================= */
+
+        .status {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+            display: inline-block;
+        }
+
+        .available {
+            background: #e4f7ed;
+            color: #16834a;
+        }
+
+        .low {
+            background: #fff4d8;
+            color: #a66b00;
+        }
+
+        .shortage {
+            background: #fde5e5;
+            color: #c0392b;
+        }
+
+
+        /* =========================
+           Details Button
+        ========================= */
+
+        .details-btn {
+            background: #e8f4f6;
+            color: #08788a;
+            border: none;
+            padding: 7px 12px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .details-btn:hover {
+            background: #d6edf0;
+        }
+        
+
+
+        /* =========================
+           No Results
+        ========================= */
+
+        .no-results {
+            text-align: center;
+            padding: 35px;
+            color: #718086;
+            background: white;
+        }
+
+
+        /* =========================
+           Mobile
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .navbar {
+                padding: 0 20px;
+            }
+
+            .nav-links {
+                gap: 10px;
+            }
+
+            .nav-links a:not(.logout) {
+                display: none;
+            }
+
+            .search-form {
+                flex-direction: column;
+            }
+
+            .search-form button {
+                width: 100%;
+                height: 48px;
+            }
+
+            .medicine-table {
+                font-size: 12px;
+            }
+
+            .medicine-table th,
+            .medicine-table td {
+                padding: 10px 7px;
+            }
+
+            .container {
+                padding: 25px 15px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================
+         Header
+    ========================= -->
+
+   <header class="top-header">
+
+    <div class="header-brand">
+
+        <img
+            src="{{ url_for('static', filename='images/meditrack_logo.png') }}"
+            alt="MediTrack Logo"
+            class="header-logo"
+        >
+
+        <div class="brand-text">
+            <h1>MediTrack</h1>
+            <p>Track Medicines. Improve Care.</p>
+        </div>
+
+    </div>
+
+    <div class="page-title">
+        <h2>Medicine Availability</h2>
+    </div>
+
+    <div class="header-actions">
+
+        {% if session.get("role") == "admin" %}
+            <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">
+                Dashboard
+            </a>
+        {% else %}
+            <a href="{{ url_for('user_dashboard') }}" class="dashboard-btn">
+                Dashboard
+            </a>
+        {% endif %}
+
+    </div>
+
+</header>
+
+
+    <!-- =========================
+         Main Content
+    ========================= -->
+
+    <div class="container">
+
+
+        <!-- Page Title -->
+
+        <div class="page-title">
+            
+
+        </div>
+
+
+
+        <!-- =========================
+             Search Box
+        ========================= -->
+
+        <div class="search-card">
+
+            <h3>
+                Search Medicine
+            </h3>
+
+
+            <form
+                action="{{ url_for('search') }}"
+                method="GET"
+                class="search-form"
+            >
+
+                <input
+                    type="text"
+                    name="query"
+                    value="{{ search_query or '' }}"
+                    placeholder="Enter medicine name..."
+                    required
+                >
+
+
+                <button type="submit">
+                    Search
+                </button>
+
+            </form>
+
+
+            {% if search_query %}
+
+                <div class="search-message">
+
+                    Showing results for:
+                    <strong>{{ search_query }}</strong>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+
+        <!-- =========================
+             Medicine List
+        ========================= -->
+
+        <h2 class="results-title">
+            Medicine List
+        </h2>
+
+
+
+        <table class="medicine-table">
+
+            <thead>
+
+                <tr>
+
+                   <th>ID</th>
+
+                    <th>
+                        Medicine
+                    </th>
+
+                    <th>
+                        Category
+                    </th>
+
+                    <th>
+                        Location
+                    </th>
+
+                    <th>
+                        Availability
+                    </th>
+
+                    <th>
+                        Details
+                    </th>
+
+                </tr>
+
+            </thead>
+
+
+
+            <tbody>
+
+
+                {% if medicines %}
+
+
+                    {% for medicine in medicines %}
+
+                    <tr>
+                          <td>{{ loop.index }}</td>
+                     
+
+
+                        <!-- Medicine Name -->
+
+                       <td>
+                
+
+                            <strong>
+                                {{ medicine.name }}
+                            </strong>
+
+                        </td>
+                        
+
+
+                        <!-- Category -->
+
+                        <td>
+                            {{ medicine.category }}
+                        </td>
+
+
+                        <!-- Location -->
+
+                        <td>
+                            Local Pharmacy
+                        </td>
+
+
+                        <!-- Availability -->
+
+                        <td>
+
+
+                            {% if medicine.quantity >= 500 %}
+
+                                <span class="status available">
+                                    Available
+                                </span>
+
+
+                            {% elif medicine.quantity > 100 %}
+
+                                <span class="status low">
+                                    Low Stock
+                                </span>
+
+
+                            {% else %}
+
+                                <span class="status shortage">
+                                    Shortage
+                                </span>
+
+                            {% endif %}
+
+
+                        </td>
+
+
+                        <!-- Details -->
+
+                        <td>
+
+                            <a href="{{ url_for('medicine_detail', medicine_id=medicine.id) }}"
+   class="details-btn">
+    View
+</a>
+
+                        </td>
+
+
+                    </tr>
+
+                    {% endfor %}
+
+
+                {% else %}
+
+
+                    <tr>
+
+                        <td
+                            colspan="5"
+                            class="no-results"
+                        >
+
+                            {% if search_query %}
+
+                                No medicines found for
+                                "<strong>{{ search_query }}</strong>".
+
+                            {% else %}
+
+                                No medicines available.
+
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+
+
+                {% endif %}
+
+
+            </tbody>
+
+        </table>
+
+
+    </div>
+
+
+</body>
+
+</html>
