@@ -21,13 +21,12 @@ bcrypt = Bcrypt(app)
 # =========================================================
 def get_db_connection():
     return mysql.connector.connect(
-        host=os.environ["DB_HOST","localhost"],
-        user=os.environ["DB_USER","root"],
-        password=os.environ"[DB_PASSWORD,"MediTrack@2026"],
-        database=os.environ["DB_NAME","meditrack"],
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASSWORD", ""),
+        database=os.getenv("DB_NAME", "meditrack"),
         port=int(os.getenv("DB_PORT", "3306"))
     )
-
 
 # =========================================================
 # HOME PAGE
