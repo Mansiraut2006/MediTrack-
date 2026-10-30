@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # Secret key for login session
-app.secret_key = os.environ.get("SECRET_KEY", "local-development-key")
+app.secret_key = os.environ["SECRET_KEY"]
 
 bcrypt = Bcrypt(app)
 
@@ -21,10 +21,10 @@ bcrypt = Bcrypt(app)
 # =========================================================
 def get_db_connection():
     return mysql.connector.connect(
-        host=os.getenv("DB_HOST", "localhost"),
-        user=os.getenv("DB_USER", "root"),
-        password=os.getenv("DB_PASSWORD", ""),
-        database=os.getenv("DB_NAME", "meditrack"),
+        host=os.environ["DB_HOST"],
+        user=os.environ["DB_USER"],
+        password=os.environ["DB_PASSWORD"],
+        database=os.environ["DB_NAME"],
         port=int(os.getenv("DB_PORT", "3306"))
     )
 
@@ -44,13 +44,11 @@ def login():
 
     if request.method == "GET":
         return render_template("login.html")
-    
-    # Get form data
-    email = request.form.get("email", "").strip()
+
+    email = request.form.get("email", "").strip().lower()
     password = request.form.get("password", "")
     account_type = request.form.get("account_type", "")
 
-    # Check empty fields
     if not email or not password or not account_type:
         return render_template(
             "login.html",
@@ -64,7 +62,6 @@ def login():
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-
         cursor.execute("""
             SELECT id, name, email, password, role
             FROM users
@@ -73,57 +70,33 @@ def login():
 
         user = cursor.fetchone()
 
-        # Check whether the account exists
         if user is None:
             return render_template(
                 "login.html",
                 error="Account not registered. Please register first."
             )
-        # Check password
-        if not check_password_hash(user["password"], password):
-            return render_template(
-        "login.html",
-        error="Incorrect email or password."
-    )
 
-        # Check selected account type
-        if account_type == "admin" and user["role"] != "admin":
-            return render_template(
-        "login.html",
-        error="You are not registered as an administrator."
-    )     
-
-        # Check password
         if not check_password_hash(user["password"], password):
             return render_template(
                 "login.html",
                 error="Incorrect email or password."
             )
 
-        # Check selected account type
-        if account_type == "admin" and user["role"] != "admin":
+        if account_type != user["role"]:
             return render_template(
                 "login.html",
-                error="You are not registered as an administrator."
+                error="Selected account type does not match your registered account."
             )
 
-        elif account_type == "user" and user["role"] != "user":
-            return render_template(
-                "login.html",
-                error="This account is registered as an administrator."
-            )
-
-        # Save session
         session["user_id"] = user["id"]
         session["email"] = user["email"]
         session["name"] = user["name"]
         session["role"] = user["role"]
 
-        # Redirect according to role
         if user["role"] == "admin":
             return redirect(url_for("admin_dashboard"))
-        else:
-            return redirect(url_for("user_dashboard"))
+
+        return redirect(url_for("user_dashboard"))
 
     except Exception:
         app.logger.exception("Login failed")
