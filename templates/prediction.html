@@ -4,106 +4,92 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Prediction - MediTrack</title>
+    <title>AI Prediction | MediTrack</title>
 
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: Arial, sans-serif;
+            font-family: "Segoe UI", Arial, sans-serif;
+        }
+
+        :root {
+            --navy: #173c57;
+            --teal: #087f8c;
+            --muted: #718797;
+            --border: #e6edf2;
+            --background: #f4f7fb;
         }
 
         body {
-            background: #f3f7f9;
-            color: #193c53;
+            background: var(--background);
+            color: var(--navy);
         }
 
-        /* ===== HEADER ===== */
+        /* HEADER */
         .top-header {
-            width: 100%;
-            min-height: 100px;
-            background: #0b8291;
+            min-height: 86px;
+            background: #12374f;
+            padding: 12px 4%;
             display: flex;
-            align-items: center;
             justify-content: space-between;
-            padding: 12px 28px;
-            position: relative;
+            align-items: center;
             gap: 15px;
         }
 
         .header-brand {
             display: flex;
             align-items: center;
-            gap: 13px;
-            min-width: 0;
+            gap: 12px;
         }
 
         .header-logo {
-            width: 72px;
-            height: 72px;
+            width: 58px;
+            height: 58px;
             object-fit: contain;
             background: white;
-            border-radius: 9px;
+            border-radius: 10px;
             padding: 4px;
-            flex-shrink: 0;
         }
 
         .brand-text h1 {
             color: white;
-            font-size: 27px;
-            margin: 0;
+            font-size: 24px;
         }
 
         .brand-text p {
-            color: white;
-            font-size: 12px;
-            margin-top: 6px;
+            color: #c5dce5;
+            font-size: 11px;
+            margin-top: 4px;
         }
 
         .page-title {
-            position: absolute;
-            left: 50%;
-            transform: translateX(-50%);
-            text-align: center;
-            pointer-events: none;
-        }
-
-        .page-title h2 {
             color: white;
-            font-size: 22px;
-            white-space: nowrap;
-        }
-
-        .header-actions {
-            margin-left: auto;
-            flex-shrink: 0;
+            font-size: 20px;
+            font-weight: 600;
         }
 
         .dashboard-btn {
-            display: inline-flex;
-            justify-content: center;
-            align-items: center;
-            min-width: 115px;
-            height: 43px;
-            padding: 0 16px;
             background: white;
-            color: #08788a;
-            text-decoration: none;
+            color: var(--teal);
+            padding: 11px 19px;
             border-radius: 8px;
-            font-size: 14px;
-            font-weight: bold;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 13px;
+            transition: .2s;
         }
 
         .dashboard-btn:hover {
-            background: #e6f5f6;
+            background: #dff3f3;
         }
 
-        /* ===== MAIN DASHBOARD ===== */
+        /* MAIN */
         .dashboard-container {
-            width: 96%;
-            max-width: 1500px;
-            margin: 28px auto;
+            width: 94%;
+            max-width: 1450px;
+            margin: 32px auto;
         }
 
         .dashboard-heading {
@@ -111,47 +97,55 @@
             justify-content: space-between;
             align-items: center;
             gap: 15px;
-            margin-bottom: 22px;
+            margin-bottom: 25px;
         }
 
-        .dashboard-heading h1 {
+        .dashboard-heading h2 {
+            color: var(--navy);
             font-size: 27px;
-            color: #173c57;
-            margin-bottom: 8px;
         }
 
         .dashboard-heading p {
-            color: #718797;
+            color: var(--muted);
             font-size: 14px;
-            line-height: 1.5;
+            margin-top: 7px;
         }
 
         .status-active {
-            color: #168b75;
+            color: #14866f;
+            background: #e6f6f1;
+            padding: 9px 13px;
+            border-radius: 20px;
             font-size: 12px;
-            font-weight: bold;
+            font-weight: 700;
             white-space: nowrap;
         }
 
-        /* ===== SUMMARY CARDS ===== */
+        /* SUMMARY CARDS */
         .summary-grid {
             display: grid;
-            grid-template-columns: repeat(4, minmax(0, 1fr));
-            gap: 16px;
-            margin-bottom: 22px;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 18px;
+            margin-bottom: 25px;
         }
 
         .summary-card {
             background: white;
-            border: 1px solid #e2e9ed;
-            border-radius: 12px;
-            padding: 19px;
-            box-shadow: 0 3px 12px rgba(25, 50, 70, 0.05);
-            border-top: 4px solid #0b8291;
+            padding: 23px;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+            box-shadow: 0 4px 15px rgba(25, 60, 83, .04);
+            border-top: 4px solid var(--teal);
+            transition: transform .2s, box-shadow .2s;
+        }
+
+        .summary-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(25, 60, 83, .08);
         }
 
         .summary-card.high {
-            border-top-color: #e45353;
+            border-top-color: #d94c4c;
         }
 
         .summary-card.medium {
@@ -159,32 +153,26 @@
         }
 
         .summary-card.low {
-            border-top-color: #159b87;
-        }
-
-        .summary-icon {
-            font-size: 23px;
-            margin-bottom: 12px;
+            border-top-color: #18865f;
         }
 
         .summary-card h3 {
-            font-size: 29px;
-            color: #173c57;
-            margin-bottom: 6px;
+            font-size: 31px;
+            color: var(--navy);
+            margin-bottom: 8px;
         }
 
         .summary-card p {
-            color: #718797;
+            color: var(--muted);
             font-size: 13px;
-            line-height: 1.4;
+            font-weight: 500;
         }
 
-        /* ===== TWO-COLUMN LAYOUT ===== */
+        /* DASHBOARD LAYOUT */
         .dashboard-layout {
             display: grid;
-            grid-template-columns: minmax(0, 0.95fr)
-                                   minmax(0, 1.25fr);
-            gap: 20px;
+            grid-template-columns: minmax(0, .95fr) minmax(0, 1.2fr);
+            gap: 22px;
             align-items: start;
         }
 
@@ -192,45 +180,43 @@
         .right-column {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 22px;
             min-width: 0;
         }
 
         .panel {
             background: white;
-            border: 1px solid #e2e9ed;
-            border-radius: 12px;
-            padding: 21px;
-            box-shadow: 0 3px 12px rgba(25, 50, 70, 0.05);
-            min-width: 0;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            padding: 23px;
+            box-shadow: 0 4px 15px rgba(25, 60, 83, .04);
         }
 
         .panel h2 {
             font-size: 18px;
-            line-height: 1.4;
-            color: #173c57;
+            color: var(--navy);
         }
 
         .panel-subtitle {
-            color: #718797;
+            color: var(--muted);
             font-size: 13px;
+            margin-top: 7px;
             line-height: 1.5;
-            margin-top: 6px;
         }
 
-        /* ===== INVENTORY HEALTH DONUT ===== */
+        /* INVENTORY HEALTH */
         .health-summary {
             display: flex;
             align-items: center;
             justify-content: space-around;
             flex-wrap: wrap;
-            gap: 22px;
-            margin-top: 25px;
+            gap: 25px;
+            margin-top: 27px;
         }
 
         .health-ring {
-            width: 155px;
-            height: 155px;
+            width: 165px;
+            height: 165px;
             flex-shrink: 0;
             border-radius: 50%;
             display: grid;
@@ -243,77 +229,87 @@
         }
 
         .ring-center {
-            width: 112px;
-            height: 112px;
+            width: 119px;
+            height: 119px;
             background: white;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
-            align-items: center;
             justify-content: center;
+            align-items: center;
         }
 
         .ring-center strong {
-            font-size: 27px;
-            color: #173c57;
+            font-size: 28px;
+            color: var(--navy);
         }
 
         .ring-center span {
+            color: var(--muted);
             font-size: 12px;
-            color: #718797;
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
         .health-legend {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 17px;
             font-size: 13px;
         }
 
         .legend-item {
             display: flex;
             align-items: center;
-            gap: 7px;
+            gap: 9px;
         }
 
         .dot {
             width: 10px;
             height: 10px;
             border-radius: 50%;
-            flex-shrink: 0;
         }
 
-        .dot.green {
-            background: #159b87;
+        .dot.green { background: #159b87; }
+        .dot.yellow { background: #e9ad37; }
+        .dot.red { background: #e45353; }
+
+        /* KEY METRICS */
+        .metric-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #edf1f3;
+            font-size: 13px;
         }
 
-        .dot.yellow {
-            background: #e9ad37;
+        .metric-item:last-child {
+            border-bottom: none;
         }
 
-        .dot.red {
-            background: #e45353;
+        .metric-item span {
+            color: var(--muted);
         }
 
-        /* ===== MEDICINES REQUIRING ATTENTION ===== */
+        .metric-item strong {
+            font-size: 15px;
+        }
+
+        .text-red { color: #d94c4c; }
+        .text-yellow { color: #b77a12; }
+        .text-green { color: #16865f; }
+
+        /* MEDICINES REQUIRING ATTENTION */
         .attention-item {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 15px 0;
+            gap: 13px;
+            padding: 16px 0;
             border-bottom: 1px solid #edf1f3;
         }
 
-        .medicine-symbol {
-            width: 43px;
-            height: 43px;
-            flex-shrink: 0;
-            display: grid;
-            place-items: center;
-            background: #edf8f7;
-            border-radius: 9px;
-            font-size: 22px;
+        .attention-item:last-of-type {
+            border-bottom: none;
         }
 
         .attention-details {
@@ -323,6 +319,7 @@
 
         .attention-details strong {
             font-size: 14px;
+            color: var(--navy);
             overflow-wrap: anywhere;
         }
 
@@ -330,42 +327,41 @@
         .attention-details small {
             display: block;
             margin-top: 5px;
-            color: #718797;
             font-size: 12px;
+            color: var(--muted);
         }
 
         .risk-badge {
-            display: inline-block;
-            padding: 6px 9px;
-            border-radius: 6px;
+            padding: 7px 11px;
+            border-radius: 20px;
             font-size: 11px;
-            font-weight: bold;
+            font-weight: 700;
             white-space: nowrap;
         }
 
         .high-badge {
-            background: #ffe4e4;
-            color: #c93636;
+            color: #c43e3e;
+            background: #ffeded;
         }
 
         .medium-badge {
-            background: #fff0d2;
             color: #a66c00;
+            background: #fff2d7;
         }
 
         .low-badge {
-            background: #dcf6e9;
             color: #168052;
+            background: #e5f6ec;
         }
 
         .text-link,
         .view-details {
             display: inline-block;
-            margin-top: 14px;
-            color: #087f8c;
-            text-decoration: none;
+            margin-top: 15px;
+            color: var(--teal);
             font-size: 13px;
-            font-weight: bold;
+            font-weight: 700;
+            text-decoration: none;
         }
 
         .text-link:hover,
@@ -373,27 +369,25 @@
             text-decoration: underline;
         }
 
-        /* ===== AI RECOMMENDATIONS ===== */
+        /* RECOMMENDATIONS */
         .recommendation-heading {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
             gap: 12px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
 
         .recommendation-card {
-            background: #fff;
-            border: 1px solid #dfe8ec;
-            border-radius: 10px;
-            padding: 17px;
-            margin-bottom: 15px;
-            min-width: 0;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 16px;
+            background: white;
         }
 
         .recommendation-card.urgent {
-            border-color: #b8ded8;
-            background: #fbfefe;
+            border-left: 4px solid #df5555;
         }
 
         .recommendation-top {
@@ -404,36 +398,19 @@
         }
 
         .recommendation-name {
-            display: flex;
-            align-items: center;
-            gap: 10px;
             min-width: 0;
-        }
-
-        .medicine-number {
-            display: grid;
-            place-items: center;
-            width: 29px;
-            height: 29px;
-            flex-shrink: 0;
-            border-radius: 7px;
-            background: #d9f1ed;
-            color: #087f78;
-            font-weight: bold;
-            font-size: 13px;
         }
 
         .recommendation-name h3 {
             font-size: 14px;
-            line-height: 1.4;
-            color: #193c53;
+            color: var(--navy);
             overflow-wrap: anywhere;
         }
 
         .recommendation-name p {
-            color: #718797;
+            color: var(--muted);
             font-size: 12px;
-            margin-top: 4px;
+            margin-top: 5px;
         }
 
         .recommendation-details {
@@ -441,7 +418,7 @@
             grid-template-columns: 1fr 1fr;
             gap: 12px;
             margin-top: 17px;
-            padding: 14px 0;
+            padding: 15px 0;
             border-top: 1px solid #edf1f3;
             border-bottom: 1px solid #edf1f3;
         }
@@ -455,11 +432,11 @@
 
         .recommendation-details div + div {
             border-left: 1px solid #e3e9ed;
-            padding-left: 13px;
+            padding-left: 15px;
         }
 
         .recommendation-details span {
-            color: #718797;
+            color: var(--muted);
             font-size: 12px;
         }
 
@@ -469,99 +446,77 @@
         }
 
         .recommendation-message {
-            margin-top: 13px;
-            padding: 12px;
-            background: #f2f8f9;
-            border-radius: 8px;
+            margin-top: 14px;
+            padding: 13px;
+            background: #f1f7f8;
+            border-radius: 9px;
             color: #526d7e;
             font-size: 12px;
             line-height: 1.6;
         }
 
         .recommendation-message strong {
-            color: #087f8c;
+            color: var(--teal);
         }
 
         .empty-state {
-            padding: 35px 12px;
             text-align: center;
-            color: #718797;
+            padding: 35px 12px;
+            color: var(--muted);
         }
 
         .empty-state h3 {
-            color: #173c57;
+            color: var(--navy);
             margin-bottom: 9px;
         }
 
         .dashboard-note {
-            margin: 22px 0;
-            color: #718797;
+            margin: 24px 0;
+            color: var(--muted);
             font-size: 12px;
-            line-height: 1.6;
+            line-height: 1.7;
         }
 
-        /* ===== RESPONSIVE DESIGN ===== */
+        /* RESPONSIVE */
         @media (max-width: 1000px) {
             .summary-grid {
-                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-template-columns: repeat(2, 1fr);
             }
 
             .dashboard-layout {
                 grid-template-columns: 1fr;
-            }
-
-            .page-title {
-                position: static;
-                transform: none;
-                margin: 0 auto;
-            }
-
-            .page-title h2 {
-                font-size: 18px;
             }
         }
 
         @media (max-width: 600px) {
             .top-header {
                 flex-wrap: wrap;
-                padding: 12px;
-                gap: 12px;
+                padding: 13px;
             }
 
             .header-logo {
-                width: 52px;
-                height: 52px;
+                width: 48px;
+                height: 48px;
             }
 
             .brand-text h1 {
-                font-size: 21px;
-            }
-
-            .brand-text p {
-                font-size: 10px;
+                font-size: 20px;
             }
 
             .page-title {
                 order: 3;
                 width: 100%;
-                text-align: left;
-                margin: 0;
-            }
-
-            .page-title h2 {
-                font-size: 19px;
+                font-size: 17px;
             }
 
             .dashboard-btn {
-                min-width: 90px;
-                height: 38px;
-                padding: 0 10px;
+                padding: 9px 12px;
                 font-size: 12px;
             }
 
             .dashboard-container {
                 width: 94%;
-                margin-top: 20px;
+                margin-top: 22px;
             }
 
             .dashboard-heading {
@@ -569,20 +524,28 @@
                 flex-direction: column;
             }
 
-            .dashboard-heading h1 {
+            .dashboard-heading h2 {
                 font-size: 23px;
             }
 
+            .summary-grid {
+                gap: 11px;
+            }
+
             .summary-card {
-                padding: 14px;
+                padding: 16px;
             }
 
             .summary-card h3 {
                 font-size: 25px;
             }
 
+            .summary-card p {
+                font-size: 12px;
+            }
+
             .panel {
-                padding: 15px;
+                padding: 16px;
             }
 
             .health-summary {
@@ -591,10 +554,6 @@
 
             .recommendation-top {
                 flex-wrap: wrap;
-            }
-
-            .recommendation-details {
-                grid-template-columns: 1fr 1fr;
             }
         }
     </style>
@@ -617,17 +576,13 @@
         </div>
     </div>
 
-    <div class="page-title">
-        <h2>AI Shortage Prediction</h2>
-    </div>
+    <div class="page-title">AI Shortage Prediction</div>
 
-    <div class="header-actions">
+    <div>
         {% if session.get("role") == "admin" %}
-            <a href="{{ url_for('admin_dashboard') }}"
-               class="dashboard-btn">Dashboard</a>
+            <a href="{{ url_for('admin_dashboard') }}" class="dashboard-btn">Dashboard</a>
         {% else %}
-            <a href="{{ url_for('user_dashboard') }}"
-               class="dashboard-btn">Dashboard</a>
+            <a href="{{ url_for('user_dashboard') }}" class="dashboard-btn">Dashboard</a>
         {% endif %}
     </div>
 
@@ -637,37 +592,33 @@
 
     <div class="dashboard-heading">
         <div>
-            <h1>AI Inventory Dashboard</h1>
+            <h2>AI Inventory Dashboard</h2>
             <p>Monitor medicine stock and identify possible shortages.</p>
         </div>
 
-        <span class="status-active">● Monitoring Active</span>
+        <span class="status-active">Monitoring Active</span>
     </div>
 
-    <!-- SUMMARY METRICS -->
+    <!-- SUMMARY CARDS -->
     <section class="summary-grid">
 
         <div class="summary-card">
-            <div class="summary-icon"></div>
-            <h2>{{ total_medicines }}</h2>
+            <h3>{{ total_medicines }}</h3>
             <p>Total Medicines</p>
         </div>
 
         <div class="summary-card high">
-            <div class="summary-icon"></div>
-            <h2>{{ high_count }}</h2>
+            <h3>{{ high_count }}</h3>
             <p>High Shortage Risk</p>
         </div>
 
         <div class="summary-card medium">
-            <div class="summary-icon"></div>
-            <h2>{{ medium_count }}</h2>
+            <h3>{{ medium_count }}</h3>
             <p>Medium Shortage Risk</p>
         </div>
 
         <div class="summary-card low">
-            <div class="summary-icon"></div>
-            <h2>{{ low_count }}</h2>
+            <h3>{{ low_count }}</h3>
             <p>Low Shortage Risk</p>
         </div>
 
@@ -675,7 +626,6 @@
 
     <div class="dashboard-layout">
 
-        <!-- LEFT COLUMN -->
         <section class="left-column">
 
             <!-- INVENTORY HEALTH -->
@@ -693,9 +643,7 @@
                         "
                     >
                         <div class="ring-center">
-                            <strong>
-                                {{ (low_count * 100 / total_medicines)|round|int if total_medicines else 0 }}%
-                            </strong>
+                            <strong>{{ (low_count * 100 / total_medicines)|round|int if total_medicines else 0 }}%</strong>
                             <span>Low Risk</span>
                         </div>
                     </div>
@@ -750,6 +698,7 @@
             <!-- MEDICINES REQUIRING ATTENTION -->
             <div class="panel">
                 <h2>Medicines Requiring Attention</h2>
+
                 <p class="panel-subtitle">
                     The five medicines with the lowest current stock
                 </p>
@@ -757,8 +706,6 @@
                 {% for medicine in medicines[:5] %}
 
                 <div class="attention-item">
-
-                    <div class="medicine-symbol"></div>
 
                     <div class="attention-details">
                         <strong>{{ medicine.name }}</strong>
@@ -786,26 +733,27 @@
                 {% endfor %}
 
                 <a href="{{ url_for('shortage_risk') }}" class="text-link">
-                    View Shortage Risk →
+                    View Shortage Risk
                 </a>
             </div>
 
         </section>
 
-        <!-- RIGHT COLUMN -->
         <section class="right-column">
 
+            <!-- AI RECOMMENDATIONS -->
             <div class="panel">
 
                 <div class="recommendation-heading">
                     <div>
                         <h2>AI-Powered Stock Recommendations</h2>
+
                         <p class="panel-subtitle">
                             Stock assessment based on current quantities
                         </p>
                     </div>
 
-                    <span class="status-active">● Active</span>
+                    <span class="status-active">Active</span>
                 </div>
 
                 {% for medicine in medicines %}
@@ -816,36 +764,16 @@
                     <div class="recommendation-top">
 
                         <div class="recommendation-name">
-
-                            <span class="medicine-number">
-                                {{ loop.index }}
-                            </span>
-
-                            <div>
-                                <h3>{{ medicine.name }}</h3>
-                                <p>{{ medicine.category }}</p>
-                            </div>
-
+                            <h3>{{ medicine.name }}</h3>
+                            <p>{{ medicine.category }}</p>
                         </div>
 
                         {% if medicine.quantity <= 100 %}
-
-                            <span class="risk-badge high-badge">
-                                High Priority
-                            </span>
-
+                            <span class="risk-badge high-badge">High Priority</span>
                         {% elif medicine.quantity < 500 %}
-
-                            <span class="risk-badge medium-badge">
-                                Monitor
-                            </span>
-
+                            <span class="risk-badge medium-badge">Monitor</span>
                         {% else %}
-
-                            <span class="risk-badge low-badge">
-                                Stock Stable
-                            </span>
-
+                            <span class="risk-badge low-badge">Stock Stable</span>
                         {% endif %}
 
                     </div>
@@ -896,7 +824,7 @@
                         href="{{ url_for('medicine_detail', medicine_id=medicine.id) }}"
                         class="view-details"
                     >
-                        View Details →
+                        View Details
                     </a>
 
                 </div>

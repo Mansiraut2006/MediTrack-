@@ -11,7 +11,7 @@ load_dotenv()
 app = Flask(__name__)
 
 # Secret key for login session
-app.secret_key = os.environ["SECRET_KEY"]
+app.secret_key = os.environ.get("SECRET_KEY")
 
 bcrypt = Bcrypt(app)
 
@@ -26,6 +26,7 @@ def get_db_connection():
         password=os.environ["DB_PASSWORD"],
         database=os.environ["DB_NAME"],
         port=int(os.getenv("DB_PORT", "3306"))
+        ssl_disabled=False
     )
 
 # =========================================================
