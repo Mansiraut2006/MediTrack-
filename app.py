@@ -5,8 +5,7 @@ import re
 import mysql.connector
 import os
 from dotenv import load_dotenv
-import secrets
-print(secrets.token_hex(32))
+
 load_dotenv()
 
 app = Flask(__name__)
@@ -22,12 +21,11 @@ bcrypt = Bcrypt(app)
 # =========================================================
 def get_db_connection():
     return mysql.connector.connect(
-        host=os.environ["DB_HOST"],
-        user=os.environ["DB_USER"],
-        password=os.environ["DB_PASSWORD"],
-        database=os.environ["DB_NAME"],
-        port=int(os.environ.get("DB_PORT", "3306")),
-        ssl_disabled=False
+        host=os.getenv("DB_HOST", "localhost"),
+        user=os.getenv("DB_USER", "root"),
+        password=os.getenv("DB_PASSWORD", "MediTrack@2026"),
+        database=os.getenv("DB_NAME", "meditrack"),
+        port=int(os.getenv("DB_PORT", "3306"))
     )
 
 # =========================================================
@@ -41,12 +39,16 @@ def home():
 # =========================================================
 # LOGIN
 # =========================================================
+
+# =========================================================
+# LOGIN
+# =========================================================
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    # Show login page
+
     if request.method == "GET":
         return render_template("login.html")
-
+    
     # Get form data
     email = request.form.get("email", "").strip()
     password = request.form.get("password", "")
@@ -66,7 +68,7 @@ def login():
         connection = get_db_connection()
         cursor = connection.cursor(dictionary=True)
 
-        # Find user by email
+
         cursor.execute("""
             SELECT id, name, email, password, role
             FROM users
@@ -75,14 +77,27 @@ def login():
 
         user = cursor.fetchone()
 
-        # Account not registered
+        # Check whether the account exists
         if user is None:
             return render_template(
                 "login.html",
                 error="Account not registered. Please register first."
             )
+        # Check password
+        if not check_password_hash(user["password"], password):
+            return render_template(
+        "login.html",
+        error="Incorrect email or password."
+    )
 
-        # Check password using werkzeug / generate_password_hash check
+# Check selected account type
+        if account_type == "admin" and user["role"] != "admin":
+            return render_template(
+        "login.html",
+        error="You are not registered as an administrator."
+    )     
+
+        # Check password
         if not check_password_hash(user["password"], password):
             return render_template(
                 "login.html",
@@ -95,6 +110,7 @@ def login():
                 "login.html",
                 error="You are not registered as an administrator."
             )
+
         elif account_type == "user" and user["role"] != "user":
             return render_template(
                 "login.html",
@@ -113,29 +129,106 @@ def login():
         else:
             return redirect(url_for("user_dashboard"))
 
-    except Exception as e:
-        # Log error in production
-        return render_template("login.html", error="An error occurred during login. Please try again.")
+    except Exception:
+        app.logger.exception("Login failed")
+        return render_template(
+            "login.html",
+            error="Unable to log in right now. Please try again."
+        )
 
     finally:
-        # Safe cleanup check to prevent UnboundLocalError
-        if cursor:
+        if cursor is not None:
             cursor.close()
-        if connection:
-            connection.close()
-# Make sure this appears ONLY ONCE in your app.py file:
 
-@app.route('/forgot-password', methods=['GET', 'POST'])
+        if connection is not None:
+            connection.close()
+            
+
+
+@app.route("/forgot-password", methods=["GET", "POST"])
 def forgot_password():
-    if request.method == 'POST':
-        email = request.form.get('email', '').strip().lower()
-        # Handle password reset logic here
-        return render_template('forgot_password.html', success="Reset instructions sent to your email.")
-        
-    return render_template('forgot_password.html')
-@app.route('/forgot-password', methods=['GET', 'POST'])
-def reset_pass():
-    return render_template('forgot_password.html')
+
+    if request.method == "POST":
+
+        email = request.form.get("email", "").strip().lower()
+        new_password = request.form.get("new_password", "")
+        confirm_password = request.form.get("confirm_password", "")
+
+        if not email or not new_password or not confirm_password:
+            return render_template(
+                "forgot_password.html",
+                error="Please fill in all fields."
+            )
+
+        if new_password != confirm_password:
+            return render_template(
+                "forgot_password.html",
+                error="New password and confirm password do not match."
+            )
+
+        if len(new_password) < 8:
+            return render_template(
+                "forgot_password.html",
+                error="Password must contain at least 8 characters."
+            )
+
+        connection = None
+        cursor = None
+
+        try:
+            connection = get_db_connection()
+            cursor = connection.cursor()
+
+            # Check registered email
+            cursor.execute(
+                "SELECT id FROM users WHERE email = %s",
+                (email,)
+            )
+
+            user = cursor.fetchone()
+
+            if user is None:
+                return render_template(
+                    "forgot_password.html",
+                    error="Email address is not registered."
+                )
+
+            # Hash new password
+            hashed_password = generate_password_hash(new_password)
+
+            # Update password in MySQL
+            cursor.execute(
+                "UPDATE users SET password = %s WHERE email = %s",
+                (hashed_password, email)
+            )
+
+            connection.commit()
+
+            return render_template(
+                "login.html",
+                success="Password updated successfully! Please login."
+            )
+
+        except Exception:
+            app.logger.exception("Password reset failed")
+
+            if connection is not None:
+                connection.rollback()
+
+            return render_template(
+                "forgot_password.html",
+                error="Unable to reset password. Please try again."
+            )
+
+        finally:
+            if cursor is not None:
+                cursor.close()
+
+            if connection is not None:
+                connection.close()
+
+    return render_template("forgot_password.html")
+
 # =========================================================
 # REGISTER
 # =========================================================
@@ -799,6 +892,23 @@ def profile():
 # RUN FLASK APPLICATION
 # =========================================================
 if __name__ == "__main__":
+    try:
+        connection = get_db_connection()
+        cursor = connection.cursor()
+
+        cursor.execute("SELECT DATABASE()")
+        print("Connected database:", cursor.fetchone()[0])
+
+        cursor.execute("SELECT COUNT(*) FROM users")
+        print("Registered users:", cursor.fetchone()[0])
+
+        cursor.close()
+        connection.close()
+
+        print("MySQL connection successful!")
+
+    except Exception as e:
+        print("MySQL connection failed:", e)
 
     app.run(
         host="127.0.0.1",

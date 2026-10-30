@@ -204,6 +204,7 @@
             margin-bottom: 20px;
             text-align: center;
         }
+        
 
         .success-message {
             background: #e7f7ed;
@@ -244,6 +245,26 @@
             font-weight: bold;
             text-decoration: none;
         }
+        .password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input {
+    padding-right: 45px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #006f7c;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 5px;
+}
     </style>
 </head>
 
@@ -345,8 +366,9 @@
                         autocomplete="off"
                     >
                 </div>
-
+                
                 <button type="submit" class="login-btn">Log In</button>
+
             </form>
 
             <div class="register-link">
