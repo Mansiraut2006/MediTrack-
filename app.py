@@ -87,7 +87,7 @@ def login():
         error="Incorrect email or password."
     )
 
-# Check selected account type
+        # Check selected account type
         if account_type == "admin" and user["role"] != "admin":
             return render_template(
         "login.html",
